@@ -11,7 +11,7 @@ spec:
   tls:
     - hosts:
         - nullservers.com
-      secretName: nullservers-tls 
+      secretName: nullservers-tls
   rules:
     - host: nullservers.com
       http:
@@ -20,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nginx-service 
+                name: nginx-service
                 port:
                   number: 80

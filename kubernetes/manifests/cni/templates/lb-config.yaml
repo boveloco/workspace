@@ -4,7 +4,7 @@ metadata:
   name: "main-pool"
 spec:
   blocks:
-  - cidr: "192.168.50.232/29"
+    - cidr: "192.168.50.232/29"
 
 ---
 apiVersion: "cilium.io/v2alpha1"
@@ -13,8 +13,8 @@ metadata:
   name: local-l2-announcement
 spec:
   interfaces:
-  - enp86s0
-  - eth0
-  - ens18
+    - enp86s0
+    - eth0
+    - ens18
   externalIPs: true
   loadBalancerIPs: true

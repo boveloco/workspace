@@ -45,7 +45,7 @@ immich:
               - path: /
                 pathType: ImplementationSpecific
         tls:
-          - secretName: home-assistant-tls
+          - secretName: immich-tls
             hosts:
               - photos.nullservers.com
               - photos.k8s.nullservers.com
@@ -57,7 +57,7 @@ immich:
           type: pvc
           storageClass: ssd-storage
       containers:
-        main: 
+        main:
           resources:
             requests:
               cpu: 1

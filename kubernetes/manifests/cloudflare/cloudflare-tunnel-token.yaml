@@ -11,8 +11,8 @@ spec:
     creationPolicy: Owner
     name: cloudflare-tunnel-token
   data:
-  - secretKey: credentials.json
-    remoteRef:
-      key: cloudflared-token
-      property: credentials.json
-      decodingStrategy: None
+    - secretKey: credentials.json
+      remoteRef:
+        key: cloudflared-token
+        property: credentials.json
+        decodingStrategy: None

@@ -1,0 +1,65 @@
+chart:
+  enabled: false
+common:
+  clusterIssuer: letsencrypt-prod
+
+  deployment:
+    enabled: true
+    port: 32400
+    replicaCount: 1
+    image: linuxserver/plex
+    nodeSelector:
+      kubernetes.io/hostname: slave01
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "500m"
+      limits:
+        memory: "1024Mi"
+        cpu: "1"
+    env:
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: VERSION
+        value: "docker"
+      - name: PLEX_CLAIM
+        valueFrom:
+          secretKeyRef:
+            name: plex-claim-token
+            key: token
+      - name: TZ
+        value: "Stockholm/Europe"
+
+  hostVolumeMounts:
+    - mountPath: /data/media
+      name: plex-media
+      hostPath: /mnt/external-drive/
+      readOnly: true
+    - mountPath: /dev/dri
+      name: quicksync
+      hostPath: /dev/dri
+
+  pvcVolumeMounts:
+    - mountPath: /config
+      name: plex-config
+      storageClassName: ssd-storage
+      size: 2Gi
+    - mountPath: /transcode
+      name: plex-transcode
+      storageClassName: ssd-storage
+      size: 5Gi
+
+  service:
+    enabled: true
+    ports:
+      - port: 80
+        targetPort: 32400
+        name: http
+        type: ClusterIP
+  ingress:
+    enabled: true
+    class: nginx
+    hosts:
+      - host: plex.k8s.nullservers.com

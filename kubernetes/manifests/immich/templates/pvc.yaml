@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: immich-data
-  namespace: immich
+  namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -19,6 +19,7 @@ metadata:
     local.path.provisioner/selected-node: slave01
     pv.kubernetes.io/provisioned-by: rancher.io/local-path
   name: pv-immich-data
+  namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
   - ReadWriteOnce

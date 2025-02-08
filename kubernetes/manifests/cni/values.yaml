@@ -1,10 +1,10 @@
-cilium: 
+cilium:
   ipam:
     operator:
       clusterPoolIPv4PodCIDRList: ["10.10.0.0/16"]
   hubble:
     relay:
-      enabled: true 
+      enabled: true
     ui:
       enabled: true
   kubeProxyReplacement: true

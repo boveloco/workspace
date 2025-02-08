@@ -6,4 +6,4 @@ type: application
 dependencies:
 - name: common
   version: 0.1.1
-  repository: https://boveloco.github.io/chart-common/
+  repository: https://boveloco.github.io/charts/

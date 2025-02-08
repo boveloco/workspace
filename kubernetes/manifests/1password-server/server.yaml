@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/version: "1.7.3"
     app.kubernetes.io/managed-by: Helm
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: onepassword-connect
   ports:
@@ -44,18 +44,16 @@ spec:
     metadata:
       labels:
         app: onepassword-connect
-        version: "1.7.3"
+        version: latest
         app.kubernetes.io/component: connect
     spec:
       volumes:
         - name: shared-data
-          emptyDir:
-            {}
+          emptyDir: {}
         - name: credentials
           secret:
             secretName: op-credentials
-      tolerations:
-        []
+      tolerations: []
       containers:
         - name: connect-api
           image: 1password/connect-api:1.7.3
@@ -66,9 +64,11 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             limits:
+              cpu: "0.5"
               memory: 128Mi
             requests:
-              cpu: 0.2
+              cpu: "0.2"
+              memory: 64Mi
           env:
             - name: OP_SESSION
               valueFrom:
@@ -82,14 +82,14 @@ spec:
             - name: OP_HTTP_PORT
               value: "8080"
             - name: OP_LOG_LEVEL
-              value: "info"            
+              value: "info"
           readinessProbe:
             httpGet:
               path: /health
               scheme: HTTP
               port: 8080
             initialDelaySeconds: 15
-          
+
           livenessProbe:
             httpGet:
               path: /heartbeat
@@ -98,7 +98,7 @@ spec:
             failureThreshold: 3
             periodSeconds: 30
             initialDelaySeconds: 15
-          
+
           volumeMounts:
             - mountPath: /home/opuser/.op/data
               name: shared-data
@@ -109,8 +109,7 @@ spec:
             runAsUser: 999
             runAsGroup: 999
             allowPrivilegeEscalation: false
-          resources:
-            {}
+          resources: {}
           env:
             - name: OP_HTTP_PORT
               value: "8081"
@@ -124,13 +123,13 @@ spec:
             - name: OP_BUS_PEERS
               value: localhost:11220
             - name: OP_LOG_LEVEL
-              value: "info"            
+              value: "debug"
           readinessProbe:
             httpGet:
               path: /health
               port: 8081
             initialDelaySeconds: 15
-          
+
           livenessProbe:
             httpGet:
               path: /heartbeat
@@ -139,7 +138,7 @@ spec:
             failureThreshold: 3
             periodSeconds: 30
             initialDelaySeconds: 15
-          
+
           volumeMounts:
             - mountPath: /home/opuser/.op/data
               name: shared-data

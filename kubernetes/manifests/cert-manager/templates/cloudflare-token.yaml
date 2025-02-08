@@ -11,8 +11,8 @@ spec:
     creationPolicy: Owner
     name: cloudflare-api-token-secret
   data:
-  - secretKey: password
-    remoteRef:
-      key: cloudflare-api-token
-      property: password
-      decodingStrategy: None
+    - secretKey: password
+      remoteRef:
+        key: cloudflare-api-token
+        property: password
+        decodingStrategy: None

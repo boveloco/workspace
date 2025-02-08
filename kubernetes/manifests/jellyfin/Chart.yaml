@@ -1,0 +1,9 @@
+apiVersion: v2
+name: JellyfinServer
+description: Simple Implementation for Jellyfin Server on K8S
+version: 0.1.0
+type: application
+dependencies:
+- name: common
+  version: 0.1.2
+  repository: https://boveloco.github.io/charts/

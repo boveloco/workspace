@@ -1,7 +1,7 @@
 apiVersion: v2
 name: cilium
 description: Cilium CNI
-version: 0.1.0
+version: v1.16.6
 type: application
 dependencies:
   - name: cilium

@@ -1,0 +1,73 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: {{ .Release.Namespace }}
+  labels:
+    dashboards: "grafana"
+spec:
+  config:
+    log:
+      mode: "console"
+    auth:
+      disable_login_form: "false"
+  deployment:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: grafana
+              securityContext:
+                # Customize this in case your volume provider needs specific UIDs/GIDs
+                runAsUser: 1001
+                runAsGroup: 1001
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+              readinessProbe:
+                failureThreshold: 3
+              env:
+                - name: GF_SECURITY_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: admin-user
+                      name: grafana-admin-password
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: admin-password
+                      name: grafana-admin-password
+  ingress:
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: {{ .Values.grafana.hostname }}
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: grafana-service
+                    port:
+                      number: 3000
+                path: /
+                pathType: Prefix
+{{ range .Values.grafana.additionalHosts }}
+        - host: {{ .name }}
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: grafana-service
+                    port:
+                      number: 3000
+                pathType: Prefix
+                path: /
+{{ end }}
+      tls:
+        - hosts:
+            - {{ .Values.grafana.hostname }}
+{{ range .Values.grafana.additionalHosts }}
+            - {{ .name }}
+{{ end }}
+          secretName: {{ .Release.Name }}-grafana-tls

@@ -1,3 +1,14 @@
 ingress-nginx:
+  controller:
+    replicaCount: 2
+    metrics:
+      enabled: true
+  service:
+    enableHttp2: true
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+  config:
+    use-proxy-protocol: "true"
+
   defaultBackend:
     enabled: true

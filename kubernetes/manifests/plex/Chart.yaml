@@ -1,0 +1,10 @@
+apiVersion: v2
+name: PlexServer
+description: Simple Implementation for Plex Server on K8S
+version: 0.1.0
+type: application
+dependencies:
+- name: common
+  version: 0.1.2
+  repository: https://boveloco.github.io/charts/
+  condition: chart.enabled

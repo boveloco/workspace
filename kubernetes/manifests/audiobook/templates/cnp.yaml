@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-    name: {{ .Release.Name }}-cnp
+    name: default
     namespace: {{ .Release.Namespace }}
 spec:
     endpointSelector: {}

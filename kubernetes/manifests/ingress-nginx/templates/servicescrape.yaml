@@ -1,0 +1,16 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: ingress-controller-metrics
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx  # Adjust based on your ingress labels
+  namespaceSelector:
+    matchNames:
+      - ingress-nginx  # Adjust based on your Ingress namespace
+  endpoints:
+    - port: metrics  # Ensure this matches the actual Service port name
+      path: /metrics
+      interval: 15s

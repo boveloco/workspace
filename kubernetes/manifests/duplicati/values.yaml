@@ -1,0 +1,72 @@
+common:
+  clusterIssuer: letsencrypt-prod
+ 
+  deployment:
+    enabled: true
+    port: 8200
+    replicaCount: 1
+    image: linuxserver/duplicati
+    nodeSelector:
+      kubernetes.io/hostname: slave01
+    env:
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "0"
+      - name: TZ
+        value: "Europe/Stockholm"
+      - name: DUPLICATI_PASS
+        valueFrom:
+          secretKeyRef:
+            name: duplicati-credentials
+            key: password
+      - name: DUPLICATI_USER
+        valueFrom:
+          secretKeyRef:
+            name: duplicati-credentials
+            key: username
+      - name: SETTINGS_ENCRYPTION_KEY
+        valueFrom:
+          secretKeyRef:
+            name: duplicati-credentials
+            key: encryption-key
+      - name: DUPLICATI__WEBSERVICE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: duplicati-credentials
+            key: ui-credentials
+      
+
+  hostVolumeMounts:
+    - name: external-drive
+      hostPath: /mnt/external-drive/
+      mountPath: /backups/external-drive
+      readOnly: true
+    - name: pvcs-persistent
+      hostPath: /opt/kubernetes-storage-persistent/
+      mountPath: /backups/pvcs-persistent
+      readOnly: true
+    - name: pvcs-non-persistent
+      hostPath: /opt/kubernetes-storage/
+      mountPath: /backups/pvcs-non-persistent
+      readOnly: true
+
+  pvcVolumeMounts:
+    - name: config
+      mountPath: /config
+      size: 500Mi
+      storageClassName: ssd-storage
+
+  service:
+    enabled: true
+    ports:
+      - port: 80
+        targetPort: 8200
+        name: http
+        type: ClusterIP
+
+  ingress:
+    enabled: true
+    class: nginx
+    hosts:
+      - host: backup.k8s.nullservers.com

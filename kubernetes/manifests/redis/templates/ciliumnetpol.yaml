@@ -6,13 +6,14 @@ spec:
   endpointSelector: {}
   ingress:
     - fromEndpoints:
-        - matchExpressions:
-            - key: io.kubernetes.pod.namespace.labels.name
-              operator: In
-              values:
-                - victoria-metrics
-                - immich
-                - external-secrets
+        - matchLabels:
+            io.kubernetes.pod.namespace: victoria-metrics
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: immich
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: external-secrets
   egress:
     - toEntities:
         - cluster

@@ -12,12 +12,6 @@ spec:
       toPorts:
         - ports:
             - port: "8080"
-    - fromEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: ingress-nginx
-      toPorts:
-        - ports:
-            - port: "80"
   egress:
     - toEndpoints:
         - matchLabels:
@@ -36,4 +30,3 @@ spec:
       toPorts:
         - ports:
             - port: "5432"
-

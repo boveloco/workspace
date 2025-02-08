@@ -1,1 +1,3 @@
 *.secret
+# Perfect Scale was a PoC to test how would the tool calculate cost based on premisses resources.
+perfect-scale/

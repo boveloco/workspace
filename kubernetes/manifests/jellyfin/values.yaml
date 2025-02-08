@@ -1,0 +1,54 @@
+common:
+  clusterIssuer: letsencrypt-prod
+
+  deployment:
+    enabled: true
+    port: 8096
+    replicaCount: 1
+    image: lscr.io/linuxserver/jellyfin:latest
+    nodeSelector:
+      kubernetes.io/hostname: slave01
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "500m"
+      limits:
+        memory: "1Gi"
+        cpu: "1"
+    env:
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: TZ
+        value: "Stockholm/Europe"
+      - name: JELLYFIN_PublishedServerUrl
+        value: "https://jellyfin.k8s.nullservers.com"
+
+  hostVolumeMounts:
+    - mountPath: /data/media
+      name: media
+      hostPath: /mnt/external-drive/
+      readOnly: true
+    - mountPath: /dev/dri
+      name: quicksync
+      hostPath: /dev/dri
+
+  pvcVolumeMounts:
+    - mountPath: /config
+      name: config
+      storageClassName: ssd-storage
+      size: 2Gi
+
+  service:
+    enabled: true
+    ports:
+      - port: 80
+        targetPort: 8096
+        name: http
+        type: ClusterIP
+  ingress:
+    enabled: true
+    class: nginx
+    hosts:
+      - host: jellyfin.k8s.nullservers.com

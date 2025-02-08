@@ -1,9 +1,60 @@
+grafana:
+  hostname: grafana.nullservers.com
+  additionalHosts:
+    - name: grafana.k8s.nullservers.com
 victoria-metrics-k8s-stack:
   victoria-metrics-operator:
     enabled: true
     serviceMonitor:
       enabled: true
+  prometheus-operator-crds:
+    enabled: true
+  defaultDashboards:
+    grafanaOperator:
+      enabled: true
+    redis:
+      ingress-controller:
+        name: ingress-controller
+        orgid: 9614
+      redis:
+        name: redis
+        orgid: 12776
+  defaultDatasources:
+    grafanaOperator:
+      enabled: true
+    victoriametrics:
+      perReplica: false
+      datasources:
+        - name: VictoriaMetrics
+          type: prometheus
+          access: proxy
+        - name: VictoriaMetrics-vm
+          access: proxy
+          type: victoriametrics-metrics-datasource
   grafana:
+    enabled: false
+    sidecar:
+      datasources:
+        enabled: true
+        initDatasources: true
+        label: grafana_datasource
+      dashboards:
+        provider:
+          name: default
+          orgid: 1
+        ingress-controller:
+          name: ingress-controller
+          orgid: 9614
+        redis:
+          name: redis
+          orgid: 12776
+        folder: /var/lib/grafana/dashboards
+        defaultFolderName: default
+        enabled: true
+        multicluster: false
+    plugins:
+      - redis-datasource
+      - victoriametrics-metrics-datasource
     ingress:
       enabled: true
       annotations:

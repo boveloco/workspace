@@ -7,8 +7,9 @@ spec:
   selector:
     app: nginx
   ports:
-  - protocol: TCP
-    port: 80 # The port the service exposes
-    targetPort: 80 # The port the container exposes
+    - protocol: TCP
+      port: 80 # The port the service exposes
+      targetPort: 80 # The port the container exposes
   type: ClusterIP # Or LoadBalancer if you're on a cloud provider
 ---
+
