@@ -1,0 +1,10 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      addresses:
+        - {{hostvars[host]['ansible_host']}}/24
+      routes:
+        - to: default
+          via: 192.168.1.1

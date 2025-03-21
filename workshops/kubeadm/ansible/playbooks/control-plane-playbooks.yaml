@@ -1,0 +1,195 @@
+- name: Configure Control Plane on multiple hosts
+  hosts: control_plane_nodes
+  become: yes  # Ensures commands are run as a superuser
+  vars:
+    haproxy_config_path: /etc/haproxy/haproxy.cfg
+    join_command_output: ""
+    join_token: ""
+    cert_hash: ""
+  tasks:
+    - include_tasks: ../tasks/host.yaml
+      vars:
+        host: "{{ inventory_hostname }}"
+
+    - name: Create the directory configurations
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      with_items:
+        - /tmp/{{ inventory_hostname }}           # Kubeadm init file
+    
+    - name: Install HAProxy (Debian-based systems)
+      apt:
+        name: haproxy
+        state: present
+        update_cache: yes
+      delegate_to: api01
+      when: inventory_hostname == 'api01'
+
+    - name: Generate HAProxy configuration
+      template:
+        src: haproxy.cfg.j2
+        dest: "{{ haproxy_config_path }}"
+        owner: root
+        group: root
+        mode: '0644'
+      delegate_to: api01
+      when: inventory_hostname == 'api01'
+
+    - name: Restart HAProxy to apply changes
+      systemd:
+        name: haproxy
+        state: restarted
+        enabled: true
+      delegate_to: api01
+      when: inventory_hostname == 'api01'
+
+    - name: Add kubeadm initConfiguration file
+      copy: 
+        dest: /root/kubeadmcfg.yaml
+        content: |
+          ---
+          apiVersion: kubeadm.k8s.io/v1beta4
+          kind: ClusterConfiguration
+          kubernetesVersion: stable
+          controlPlaneEndpoint: "{{ ansible_host }}:443" # change this (see below)
+          etcd:
+            external:
+              endpoints:
+                - https://10.10.1.1:2379
+                - https://10.10.1.2:2379
+                - https://10.10.1.3:2379
+              caFile: /etc/kubernetes/pki/etcd/ca.crt
+              certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+              keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Check if Kubernetes is initialized
+      stat:
+        path: /etc/kubernetes/manifests/kube-apiserver.yaml
+      delegate_to: api01
+      register: initialized
+      when: inventory_hostname == 'api01'
+
+    - name: Debug
+      debug:
+        msg: "{{ initialized.stat.exists }}"
+      when: inventory_hostname == 'api01'
+
+    # Send certificates to api01
+    - name: Send CA cert and key to api01
+      copy:
+        src: "/tmp/etcd_certs/ca/{{ item.dest | basename }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0600'
+      delegate_to: api01
+      with_items:
+        - { dest: '/etc/kubernetes/pki/etcd/ca.crt', src: 'ca.crt' }
+        - { dest: '/etc/kubernetes/pki/apiserver-etcd-client.crt', src: 'apiserver-etcd-client.crt' }
+        - { dest: '/etc/kubernetes/pki/apiserver-etcd-client.key', src: 'apiserver-etcd-client.key' }
+      when: inventory_hostname == 'api01'
+
+    # Initialize Apiserver 01
+    - name: Stop Kubelet
+      ansible.builtin.systemd_service:
+        name: kubelet
+        state: stopped
+        enabled: yes
+      delegate_to: api01
+      when: inventory_hostname == 'api01' and not initialized.stat.exists 
+
+    - name: Initialize the control plane
+      shell: kubeadm init --config /root/kubeadmcfg.yaml
+      delegate_to: api01
+      register: init_result
+      when: inventory_hostname == 'api01' and not initialized.stat.exists
+
+    - name: Fail the entire play if the task above fails
+      fail:
+        msg: "The task on your_single_node failed!"
+      when: inventory_hostname == 'api01' and not initialized.stat.exists and init_result.rc != 0
+
+    # Copy certificates to host machine
+
+    - name: Fetch API Certs to the control node
+      fetch:
+        src: "/etc/kubernetes/pki/{{ item }}"
+        dest: "/tmp/etcd_certs/api/{{ item }}"
+        flat: yes
+      with_items:
+        - ca.crt
+        - ca.key
+        - sa.key
+        - sa.pub
+        - front-proxy-ca.crt
+        - front-proxy-ca.key
+        - etcd/ca.crt
+        - apiserver-etcd-client.crt
+        - apiserver-etcd-client.key
+      delegate_to: api01
+      when: inventory_hostname == 'api01'
+
+    - name: Distribute API Certs from the control node to the other nodes
+      copy:
+        src: "/tmp/etcd_certs/api/{{ item }}"
+        dest: "/etc/kubernetes/pki/{{ item }}"
+      with_items:
+        - ca.crt
+        - ca.key
+        - sa.key
+        - sa.pub
+        - front-proxy-ca.crt
+        - front-proxy-ca.key
+        - etcd/ca.crt
+        - apiserver-etcd-client.crt
+        - apiserver-etcd-client.key
+      when: inventory_hostname != 'api01'
+
+    - name: Copy kubeconfig to the control node
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /tmp/etcd_certs/api/admin.conf
+        flat: yes
+      when: inventory_hostname == 'api01'
+
+    - name: Run kubeadm join command on first control plane node
+      command: kubeadm token create --print-join-command
+      register: join_command_output
+      when: inventory_hostname == 'api01'
+
+    - name: Extract token and certificate key from the join command output
+      set_fact:
+        join_token: "{{ (hostvars['api01'].join_command_output.stdout | regex_search('token\\s+(\\S+)', '\\1'))[0] }}"
+        cert_hash: "{{ (hostvars['api01'].join_command_output.stdout | regex_search('discovery-token-ca-cert-hash\\s+(\\S+)', '\\1'))[0] }}"
+
+    - name: Stop Kubelet
+      ansible.builtin.systemd_service:
+        name: kubelet
+        state: stopped
+        enabled: yes
+      when: inventory_hostname != 'api01'
+
+    - name: Join other control plane nodes to the cluster
+      command: kubeadm join {{hostvars[groups['control_plane_nodes'][0]].ansible_host}}:443 --token  {{ join_token }} \
+                --discovery-token-ca-cert-hash {{ cert_hash }} --control-plane
+      become: yes
+      when: inventory_hostname != 'api01'
+
+    - name: Ensure kubelet service is running and enabled
+      systemd:
+        name: kubelet
+        state: started
+        enabled: true
+
+
+  handlers:
+    - name: Reboot if necessary
+      command: reboot
+      when: reboot_required | default(false)

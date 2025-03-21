@@ -1,0 +1,96 @@
+- name: Install containerd
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - containerd
+    - containerd.io
+- name: Reload systemd daemon and enable containerd
+  shell: |
+    systemctl daemon-reload
+    systemctl enable --now containerd
+
+- name: Disable swap temporarily
+  command: swapoff -a
+
+- name: Remove swap entries from /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(.*\s+swap\s+.*)$'
+    replace: '# \1'
+  notify: Reboot if necessary
+
+- name: Verify swap is disabled
+  shell: free -h | grep -i swap
+  register: swap_status
+  ignore_errors: true
+
+- name: Setup Network (Netplan)
+  template:
+    src: netplan.yaml.j2
+    dest: /etc/netplan/50-cloud-init.yaml
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create the directory configurations
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  with_items:
+    - /etc/systemd/system/kubelet.service.d/  # kubelet configuration file
+    - /etc/kubernetes/pki/etcd/               # cert files
+    - /etc/containerd/                        # containerd folder
+    - /etc/apt/keyrings/                      # apt keyrings
+
+- name: Apply the network configuration
+  command: netplan apply
+
+- name: Install Dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https 
+    - ca-certificates 
+
+- name: Configure k8s apt
+  apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+    state: present
+
+- name: Install Kubernetes related Dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+    - kubeadm
+    - kubelet
+    - kubectl
+
+- name: Setup CRI
+  copy:
+    dest: /etc/containerd/config.toml
+    content: |
+      [plugins]
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            SystemdCgroup = true
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable ipv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: yes
+
+- name: Restart kubelet
+  shell: |2
+    systemctl daemon-reload
+    systemctl restart kubelet

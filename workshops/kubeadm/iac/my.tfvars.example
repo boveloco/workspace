@@ -1,0 +1,5 @@
+subscription_id     = "<<WORKSHOP_SUBSCRIPTION>>"
+owner               = "<<MY_NAME>>"
+admin_username      = "<<MY_USERNAME>>"
+admin_password      = "<<MY_STRONG_PASSWORD>>"
+root_ssh_public_key = "<<MY_PUBLIC_KEY>>"

@@ -1,0 +1,196 @@
+---
+- name: Configure ETCD on multiple hosts
+  hosts: etcd_nodes
+  become: yes  # Ensures commands are run as a superuser
+  vars:
+    NAMES: [etcd01, etcd02, etcd03]
+    HOSTS: ["10.10.1.1", "10.10.1.2", "10.10.1.3"]
+    value_string: ""
+  tasks:
+    - include_tasks: ../tasks/host.yaml
+      vars:
+        host: "{{ inventory_hostname }}"
+    
+    - name: Gather hostnames and IPs
+      set_fact:
+        NAMES: "{{ NAMES + [inventory_hostname] }}"
+        HOSTS: "{{ HOSTS + [ansible_host] }}"
+
+    - name: Generate the value string for all hosts
+      set_fact:
+        value_string: "{{ value_string | default('') + (',' if value_string else '') + item_name + '=https://' + item_host + ':2380' }}"
+      loop: "{{ range(0, groups['etcd_nodes']|length) | map('int') | list }}"  # Using etcd_nodes group
+      vars:
+        item_name: "{{ hostvars[groups['etcd_nodes'][item]].inventory_hostname }}"  # Using etcd_nodes group
+        item_host: "{{ hostvars[groups['etcd_nodes'][item]].ansible_host }}"  # Using etcd_nodes group
+    
+    - name: Create the directory configurations
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      with_items:
+        - /tmp/{{ inventory_hostname }}           # Kubeadm init file
+
+
+    - name: Add kubeadm initConfiguration file
+      copy:
+        dest: /tmp/{{ inventory_hostname }}/kubeadmcfg.yaml
+        content: |
+          ---
+          apiVersion: "kubeadm.k8s.io/v1beta4"
+          kind: InitConfiguration
+          nodeRegistration:
+              name: {{ inventory_hostname }}
+          localAPIEndpoint:
+              advertiseAddress: {{ ansible_host }}
+          ---
+          apiVersion: "kubeadm.k8s.io/v1beta4"
+          kind: ClusterConfiguration
+          etcd:
+              local:
+                  serverCertSANs:
+                  - "{{ ansible_host }}"
+                  peerCertSANs:
+                  - "{{ ansible_host }}"
+                  extraArgs:
+                  - name: initial-cluster
+                    value: {{ value_string }}
+                  - name: initial-cluster-state
+                    value: new
+                  - name: name
+                    value: {{ inventory_hostname }}
+                  - name: listen-peer-urls
+                    value: https://{{ ansible_host }}:2380
+                  - name: listen-client-urls
+                    value: https://{{ ansible_host }}:2379
+                  - name: advertise-client-urls
+                    value: https://{{ ansible_host }}:2379
+                  - name: initial-advertise-peer-urls
+                    value: https://{{ ansible_host }}:2380
+        owner: root
+        group: root
+        mode: '0644'
+
+    # We have a requirement to override kubelet config for ETCD since we cannot rely on kubeadm for it (External ETCD)
+    - name: Add kubelet Configuration file
+      copy:
+        dest: /etc/systemd/system/kubelet.service.d/kubelet.conf
+        content: |
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          kind: KubeletConfiguration
+          authentication:
+            anonymous:
+              enabled: false
+            webhook:
+              enabled: false
+          authorization:
+            mode: AlwaysAllow
+          cgroupDriver: systemd
+          address: 127.0.0.1
+          containerRuntimeEndpoint: unix:///var/run/containerd/containerd.sock
+          staticPodPath: /etc/kubernetes/manifests
+        owner: root
+        group: root
+        mode: '0644'
+
+    # We have a requirement to override kubelet config for ETCD since we cannot rely on kubeadm for it (External ETCD)
+    - name: Add Kubelet Systemd File
+      copy:
+        dest: /etc/systemd/system/kubelet.service.d/20-etcd-service-manager.conf
+        content: |
+          [Service]
+          ExecStart=
+          ExecStart=/usr/bin/kubelet --config=/etc/systemd/system/kubelet.service.d/kubelet.conf
+          Restart=always
+
+    ## Setup Certificates:
+    - name: Check if ca.crt exists
+      stat:
+        path: /etc/kubernetes/pki/etcd/ca.crt
+      register: ca_crt
+
+    - name: Run kubeadm init phase certs etcd-ca on etcd01
+      command: kubeadm init phase certs etcd-ca
+      delegate_to: etcd01
+      when: not ca_crt.stat.exists
+
+    - name: Fetch CA cert and key to the control node
+      fetch:
+        src: "{{ item.src }}"
+        dest: "/tmp/etcd_certs/ca/{{ item.dest | basename }}"
+        flat: yes
+      with_items:
+        - { src: '/etc/kubernetes/pki/etcd/ca.crt', dest: 'ca.crt' }
+        - { src: '/etc/kubernetes/pki/etcd/ca.key', dest: 'ca.key' }
+      delegate_to: etcd01
+      when: inventory_hostname == 'etcd01'
+
+    - name: Distribute CA cert and key to target machines
+      copy:
+        src: "/tmp/etcd_certs/ca/{{ item.dest | basename }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0600'
+      with_items:
+        - { src: 'ca.crt', dest: '/etc/kubernetes/pki/etcd/ca.crt' }
+        - { src: 'ca.key', dest: '/etc/kubernetes/pki/etcd/ca.key' }
+      when: inventory_hostname != 'etcd01'
+
+    - name: Check if etcd-server already initiated
+      stat:
+        path: /etc/kubernetes/pki/etcd/server.crt
+      register: server_crt
+
+    - name: Initiate the certificate generation process
+      shell: |
+        kubeadm init phase certs etcd-server --config=/tmp/{{ inventory_hostname }}/kubeadmcfg.yaml
+        kubeadm init phase certs etcd-peer --config=/tmp/{{ inventory_hostname }}/kubeadmcfg.yaml -v=5
+        kubeadm init phase certs etcd-healthcheck-client --config=/tmp/{{ inventory_hostname }}/kubeadmcfg.yaml -v=5
+        kubeadm init phase certs apiserver-etcd-client --config=/tmp/{{ inventory_hostname }}/kubeadmcfg.yaml -v=5
+      args:
+        executable: /bin/bash
+      when: not server_crt.stat.exists
+
+    - name: Fetch peer01 cert and key to the control node
+      fetch:
+        src: "{{ item.src }}"
+        dest: "/tmp/etcd_certs/ca/{{ item.dest | basename }}"
+        flat: yes
+      with_items:
+        - { src: '/etc/kubernetes/pki/etcd/peer.crt', dest: 'peer.crt' }
+        - { src: '/etc/kubernetes/pki/etcd/peer.key', dest: 'peer.key' }
+      delegate_to: etcd01
+      when: inventory_hostname == 'etcd01'
+
+    - name: Check if etcd-server already running
+      stat:
+        path: /etc/kubernetes/manifests/etcd.yaml
+      register: server_started
+        
+    - name: Create Initial ETCD Manifest (Start ETCD)
+      shell: |
+        mkdir -p /etc/kubernetes/manifests
+        kubeadm init phase etcd local --config=/tmp/{{ inventory_hostname }}/kubeadmcfg.yaml 
+      when: not server_started.stat.exists
+
+    # For Api
+    - name: Fetch Certs to the control node
+      fetch:
+        src: "{{ item.src }}"
+        dest: "/tmp/etcd_certs/ca/{{ item.dest | basename }}"
+        flat: yes
+      with_items:
+        - { src: '/etc/kubernetes/pki/etcd/ca.crt', dest: 'ca.crt' }
+        - { src: '/etc/kubernetes/pki/apiserver-etcd-client.crt', dest: 'apiserver-etcd-client.crt' }
+        - { src: '/etc/kubernetes/pki/apiserver-etcd-client.key', dest: 'apiserver-etcd-client.key' }
+      delegate_to: etcd01
+      when: inventory_hostname == 'etcd01'
+
+  handlers:
+    - name: Reboot if necessary
+      command: reboot
+      when: reboot_required | default(false)
