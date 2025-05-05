@@ -1,0 +1,139 @@
+<mxfile host="65bd71144e">
+    <diagram id="PvBYaB-QuUyyprIaSHf-" name="Page-1">
+        <mxGraphModel dx="-1097" dy="2007" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+                    <mxGeometry x="2590" y="-800" width="1300" height="660" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="3172" y="-643" width="180" height="315.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3212" y="-519.25" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=node" vertex="1" parent="1">
+                    <mxGeometry x="3182" y="-637" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3212" y="-465.5" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3262" y="-415.5" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3262" y="-465.5" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3262" y="-519.25" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Node" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3292" y="-642" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=ds" vertex="1" parent="1">
+                    <mxGeometry x="3137" y="-730" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="2882" y="-643" width="270" height="315.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=node" vertex="1" parent="1">
+                    <mxGeometry x="2892" y="-637" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3027" y="-430" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3211" y="-412" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3087" y="-519.25" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Node" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3087" y="-642" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="OpenTelemetry Collector" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3187" y="-730" width="98" height="49" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=pod" vertex="1" parent="1">
+                    <mxGeometry x="3027" y="-519.25" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="16" target="11">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="3162" y="-495"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=data:image/webp,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;" vertex="1" parent="1">
+                    <mxGeometry x="2897" y="-402" width="45" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="11" target="24">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="3137" y="-706" as="sourcePoint"/>
+                        <mxPoint x="3027" y="-440" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="Victoria Logs" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3022" y="-551.25" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Victoria&lt;div&gt;Metrics&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3022" y="-372" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="16">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.215;entryY=0.615;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="15">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.005;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.463;entryY=0.847;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="19">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="3142" y="-406"/>
+                            <mxPoint x="3142" y="-358"/>
+                            <mxPoint x="3287" y="-358"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.005;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="14" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Service&lt;div&gt;Monitor&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="31">
+                    <mxGeometry x="-0.8812" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.005;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="22" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=api" vertex="1" parent="1">
+                    <mxGeometry x="2932" y="-770" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.995;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="11" target="34">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="37" target="22">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Cilium Ingress Controller" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="2630" y="-519.25" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.005;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="37" target="19">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="&lt;b&gt;Requirements&lt;/b&gt;&lt;br&gt;- Logs&lt;div&gt;- Metrics&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;Logs&lt;/b&gt;:&amp;nbsp;&lt;br&gt;For log collection the server is using a pull base configuration.&amp;nbsp;&lt;br&gt;Open Telemetry Collector is getting logs from Files and API server and delivering it to VictoriaLogs which stores and provides an UI to query it.&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;Metrics&lt;/b&gt;:&lt;/div&gt;&lt;div&gt;Victoria Metrics collects the logs using ServiceMonitors and aggregates it.&amp;nbsp;&lt;br&gt;Grafana then, Connects to VictoriaMetrics and populate the desired dashboards.&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="3380" y="-789.25" width="520" height="270" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
