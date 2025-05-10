@@ -27,3 +27,4 @@ spec:
             - port: "5432"
     - toFQDNs:
         - matchPattern: "*.pgadmin.org"
+        - matchName: "auth.nullservers.com"

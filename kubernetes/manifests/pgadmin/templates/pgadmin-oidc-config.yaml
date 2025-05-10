@@ -1,0 +1,23 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: pgadmin-oidc-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    creationPolicy: Owner
+    name: pgadmin-oidc-config
+  data:
+    - secretKey: client-secret
+      remoteRef:
+        key: pgadmin-oidc-config
+        property: client-secret
+        decodingStrategy: None
+    - secretKey: client-id
+      remoteRef:
+        key: pgadmin-oidc-config
+        property: client-id
+        decodingStrategy: None
