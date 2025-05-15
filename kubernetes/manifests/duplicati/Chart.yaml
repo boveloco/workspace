@@ -5,5 +5,5 @@ version: 0.1.3
 type: application
 dependencies:
 - name: common
-  version: 0.1.9
+  version: 0.2.0
   repository: https://boveloco.github.io/charts/
