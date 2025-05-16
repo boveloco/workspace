@@ -4,7 +4,7 @@ version: 0.1.0
 type: application
 dependencies:
 - name: intel-device-plugins-operator
-  version: 0.32.0
+  version: 0.32.1
   repository: https://intel.github.io/helm-charts/
   condition: chart.enabled
 - name: intel-device-plugins-gpu
