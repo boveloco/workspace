@@ -8,5 +8,5 @@ dependencies:
   repository: https://intel.github.io/helm-charts/
   condition: chart.enabled
 - name: intel-device-plugins-gpu
-  version: 0.32.0
+  version: 0.32.1
   repository: https://intel.github.io/helm-charts/
