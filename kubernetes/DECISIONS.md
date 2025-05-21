@@ -64,9 +64,9 @@ I'm managed to put all ArgoCD resources in my Raspberry PI and it consumes the w
 
 On the following images, it shows the CPU consumption and Thermal thermal throttling of the Raspberry PI.
 ## CPU
-![CPU](resources/images/argocd-resources-01.png)
+![CPU](../docs/resources/images/argocd/resources-01.png)
 ## Thermal Throttling
-![THERMAL](resources/images/argocd-resources-02.png)
+![THERMAL](../docs/resources/images/argocd/resources-02.png)
 
 I currently run my raspberry PI with passive cooling and I don't want to add noise through extra cooling for my setup.
 

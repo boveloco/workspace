@@ -1,12 +1,12 @@
 # Kubernetes Cluster
 
-Here lyes the Kubernetes cluster configuration files. The cluster is built using the `k3s` command and the information for the instalation can be found at `ansible/playbook.yaml`.
+This repository contains the configuration files for the Kubernetes cluster. The cluster is built using the `k3s` and detailed installation instructions can be found in `ansible/playbook.yaml`.
 
-The decisions made for the cluster can be found in the file `Decisions.md`, the roadmap is possible to be followed within the [Github Project](https://github.com/users/boveloco/projects/2) for this repo.
+Decisions regarding the cluster setup are documented in `Decisions.md`. You can follow the roadmap through the [GitHub Project](https://github.com/users/boveloco/projects/2) associated with this repository.
 
 ## Cluster Specifications
 
-For more information about the cluster architecture, please refer to the SVG file at `../architecture.svc`.
+The following table outlines the key specifications of the cluster. For more details about the cluster architecture, refer to the SVG file located at `../architecture.svc`.
 
 | Specification       | Details          |
 | ------------------- | ---------------- |
@@ -14,6 +14,6 @@ For more information about the cluster architecture, please refer to the SVG fil
 | **CNI**             | Cilium           |
 | **CSI**             | LocalPathStorage |
 | **Master Nodes**    | 1                |
-| **Slaves Nodes**    | 3                |
+| **Worker Nodes**    | 3                |
 | **Database**        | SQLite           |
-| **HA**              | No               |
+| **High Availability** | No             |
