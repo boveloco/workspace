@@ -5,5 +5,5 @@ version: v1.17.3
 type: application
 dependencies:
   - name: cilium
-    version: 1.18.0
+    version: 1.18.1
     repository: https://helm.cilium.io/
