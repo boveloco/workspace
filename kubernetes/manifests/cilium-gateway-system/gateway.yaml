@@ -1,0 +1,209 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cilium-gateway
+  namespace: cilium-gateway-system
+spec:
+  gatewayClassName: cilium
+  listeners:
+  - name: https-glance
+    hostname: "start.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: glance-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-plex
+    hostname: "plex.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: plex-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-hubble
+    hostname: "hubble.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: hubble-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-grafana
+    hostname: "grafana.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: grafana-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-victoria-logs
+    hostname: "logs.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: victoria-logs-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-flux
+    hostname: "flux.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: flux-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-homepage
+    hostname: "homepage.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: homepage-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-immich
+    hostname: "immich.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: immich-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-nextcloud
+    hostname: "nextcloud.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: nextcloud-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-recipes
+    hostname: "recipes.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: recipes-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-qbittorrent
+    hostname: "qbittorrent.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: qbittorrent-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-duplicati
+    hostname: "duplicati.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: duplicati-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-collabora
+    hostname: "collabora.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: collabora-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-audiobook
+    hostname: "audiobook.k8s.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: audiobook-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-home-assistant
+    hostname: "home.nullservers.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: home-assistant-tls
+        kind: Secret
+        namespace: cilium-gateway-system
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All

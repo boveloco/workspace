@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: cilium-gateway-referencegrant
+  namespace: cilium-gateway-system
+spec:
+  from:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: plex
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: glance
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: kube-system
+  to:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: cilium-gateway

@@ -1,21 +1,21 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: plex-http-route
+  name: duplicati-http-route
   namespace: kube-system
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: plex.k8s.nullservers.com
+    external-dns.alpha.kubernetes.io/hostname: duplicati.k8s.nullservers.com
 spec:
   parentRefs:
   - name: cilium-gateway
     namespace: cilium-gateway-system
   hostnames:
-  - "plex.k8s.nullservers.com"
+  - "duplicati.k8s.nullservers.com"
   rules:
   - matches:
     - path:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: {{ .Release.Name }}
+    - name: duplicati
       port: 80

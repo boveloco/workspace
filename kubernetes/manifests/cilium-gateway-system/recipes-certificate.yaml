@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: recipes-tls
+  namespace: cilium-gateway-system
+spec:
+  secretName: recipes-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - recipes.k8s.nullservers.com

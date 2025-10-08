@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: audiobook-tls
+  namespace: cilium-gateway-system
+spec:
+  secretName: audiobook-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - audiobook.k8s.nullservers.com

@@ -48,7 +48,7 @@ common:
       targetPort: 80
       name: http
   ingress:
-    enabled: true
+    enabled: false
     class: cilium
     hosts:
-    - host: drive.nullservers.com
+    - host: nextcloud.k8s.nullservers.com

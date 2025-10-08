@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: glance-tls
+  namespace: cilium-gateway-system
+spec:
+  secretName: glance-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - glance.k8s.nullservers.com

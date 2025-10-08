@@ -1,5 +1,5 @@
 grafana:
-  hostname: grafana.nullservers.com
+  hostname: grafana.k8s.nullservers.com
 
 victoria-metrics-k8s-stack:
   vmalertmanager:

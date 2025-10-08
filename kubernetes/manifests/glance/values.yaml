@@ -42,7 +42,7 @@ common:
       name: http
       type: ClusterIP
   ingress:
-    enabled: true
+    enabled: false
     class: cilium
     hosts:
-    - host: start.nullservers.com
+    - host: start.k8s.nullservers.com

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: flux-tls
+  namespace: cilium-gateway-system
+spec:
+  secretName: flux-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - flux.k8s.nullservers.com
