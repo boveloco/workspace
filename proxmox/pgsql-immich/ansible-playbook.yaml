@@ -1,30 +1,9 @@
 - name: Install Docker and Docker Compose
   hosts: all
   become: true
+  vars_files:
+    - vars/secrets.yml
   tasks:
-
-    - name: Install required system packages
-      apk:
-        name:
-          - curl
-          - ca-certificates
-          - openssl
-          - docker
-          - docker-compose
-        state: present
-        update_cache: yes
-
-    - name: Start and enable Docker service
-      service:
-        name: docker
-        state: started
-        enabled: yes
-
-    - name: Add user to the docker group (optional)
-      user:
-        name: "{{ ansible_user | default('alpine') }}"
-        groups: docker
-        append: yes
 
     - name: Verify Docker installation
       command: docker --version
@@ -54,7 +33,7 @@
     
     - name: Create Docker-Compose file
       template:
-        src: docker-compose.yaml
+        src: docker-compose.yaml.j2
         dest: /workspace/docker-compose.yaml
         owner: root
         group: root
