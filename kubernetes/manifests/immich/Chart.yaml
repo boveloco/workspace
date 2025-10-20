@@ -5,5 +5,5 @@ version: 0.1.14
 type: application
 dependencies:
 - name: immich
-  version: 0.9.3
+  version: 0.10.1
   repository: https://immich-app.github.io/immich-charts
